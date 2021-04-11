@@ -2,7 +2,13 @@ import { PathParams, RouteKey, RouteMap, RouteMatch, RoutePath, RouteResult } fr
 import * as L from "lonna"
 import { StaticRouter } from "./StaticRouter"
 
-export function ReactiveRouter<R>(routes: RouteMap<R>, scope: L.Scope) {
+export type ReactiveRouter<R> = {
+    navigateByParams<PathKey extends RouteKey<R>>(p: PathKey, params: PathParams<PathKey>): void
+    navigateByParams<PathKey extends RouteKey<R>>(p: {} extends PathParams<PathKey> ? PathKey : never): void
+    navigateByPath: <Path extends RoutePath<R>>(path: Path) => void
+    result: L.Property<RouteResult<R>>
+}
+export function ReactiveRouter<R>(routes: RouteMap<R>, scope: L.Scope): ReactiveRouter<R> {
     const staticRouter = StaticRouter(routes)
     const navigationRequests = L.bus<RouteMatch<R>>()
     const pathFromPopstate = L.fromEvent(window, "popstate").pipe(L.map(pathFromBrowser))

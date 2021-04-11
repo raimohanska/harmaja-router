@@ -26,7 +26,19 @@ function RouteEntry<Key extends string, Result>(routeKey: Key, handler: RouteHan
     }
 }
 
-export function StaticRouter<R>(routes: RouteMap<R>) {
+type StaticRouter<R> = {
+    routeByParams<PathKey extends RouteKey<R>>(
+        routeKey: PathKey,
+        params: PathParams<PathKey>,
+    ): RouteMatch<R> | null
+    routeByParams<PathKey extends RouteKey<R>>(
+        routeKey: {} extends PathParams<PathKey> ? PathKey : never,
+    ): RouteMatch<R> | null
+    routeByPath: (path: string) => RouteMatch<R> | null;
+    routeKeys: string[];
+}
+
+export function StaticRouter<R>(routes: RouteMap<R>): StaticRouter <R> {
     const routeEntries = Object.fromEntries(
         Object.entries(routes).map(([routeKey, handler]) => {
             const entry = RouteEntry(routeKey, handler as any)
