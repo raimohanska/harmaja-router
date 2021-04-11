@@ -16,7 +16,6 @@
     "jest": "^26.4.0",
     "nodemon": "^2.0.7",
     "ts-jest": "^26.4.0",
-    "tsc-watch": "^4.2.9",
     "typescript": "^4.2",
     "@types/path-to-regexp": "^1.7.0",
     "lonna": "^0.12"
@@ -29,7 +28,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "build:watch": "tsc-watch",
+    "build:watch": "tsc --watch",
     "test": "jest",
     "test:watch": "jest --watchAll",
     "prepublishOnly": "rm -rf dist && yarn build"
