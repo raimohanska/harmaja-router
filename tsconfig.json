@@ -20,5 +20,5 @@
     "declaration": true,
     "sourceMap": true,    
   },
-  "files": ["src/StaticRouter.ts"]
+  "files": ["src/index.ts"]
 }
