@@ -10,15 +10,19 @@
     "src"
   ],
   "devDependencies": {
+    "@babel/preset-env": "^7.13.15",
     "@types/jest": "^26.0.10",
+    "@types/path-to-regexp": "^1.7.0",
     "babel-jest": "^26.3.0",
     "concurrently": "^5.3.0",
+    "harmaja": "^0.22.0",
     "jest": "^26.4.0",
+    "lonna": "^0.12",
     "nodemon": "^2.0.7",
+    "parcel-bundler": "^1.12.5",
     "ts-jest": "^26.4.0",
     "typescript": "^4.2",
-    "@types/path-to-regexp": "^1.7.0",
-    "lonna": "^0.12"
+    "prettier": "^2.2.1"    
   },
   "dependencies": {
     "path-to-regexp": "^6.2.0"
@@ -31,6 +35,9 @@
     "build:watch": "tsc --watch",
     "test": "jest",
     "test:watch": "jest --watchAll",
-    "prepublishOnly": "rm -rf dist && yarn build"
+    "prepublishOnly": "rm -rf dist && yarn build",
+    "example": "parcel --out-dir dist/examples examples/reactive-router/index.html",
+    "lint": "prettier --check \"**/*.{json,md,ts}\"",
+    "format": "prettier --write '**/*.{json,md,ts}'"    
   }
 }
