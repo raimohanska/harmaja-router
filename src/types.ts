@@ -11,11 +11,16 @@ type SplitEach<Delim extends string, Input> = Input extends [infer Head, ...infe
 type Split<Input> = SplitEach<"/", [Input]>
 type ParamsFrom<Parts> = Parts extends [infer First, ...infer Rest]
     ? First extends `:${infer Param}`
-        ? { [K in Param]: string } & ParamsFrom<Rest>
+        ? Param | ParamsFrom<Rest>
         : ParamsFrom<Rest>
-    : {}
+    : never
 
-export type PathParams<S extends string> = ParamsFrom<Split<S>>
+type ParamsObjectFrom<Parts> = Record<
+  ParamsFrom<Parts>,
+  string
+>    
+
+export type PathParams<S extends string> = ParamsObjectFrom<Split<S>>
 type ValidPathPart<PartKey extends string> = PartKey extends `:${infer Param}` ? string : PartKey
 
 type ValidPathFrom<Parts> = Parts extends [infer First, infer Second, ...infer Rest]
