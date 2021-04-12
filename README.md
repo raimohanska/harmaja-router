@@ -10,6 +10,9 @@ See [full example](examples/reactive-router/index.tsx). You can also run the exa
 
 ```ts
 const App = () => {
+    const BOARD_ROUTE = "/board/:boardId" as const
+    const ROOT_ROUTE = "/"
+
     const router = ReactiveRouter(
         {
             [ROOT_ROUTE]: () => <Home />,
