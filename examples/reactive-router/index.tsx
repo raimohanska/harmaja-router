@@ -3,7 +3,7 @@ import { ReactiveRouter } from "../../src/ReactiveRouter"
 import * as L from "lonna" 
 import { Link, RouteMap, RouteKey } from "../../src"
 
-const BOARD_ROUTE = "/board/:boardId" as const
+const BOARD_ROUTE = "/board/:boardId"
 const ROOT_ROUTE = "/"
 const routes = {
     [ROOT_ROUTE]: () => <Home/>,

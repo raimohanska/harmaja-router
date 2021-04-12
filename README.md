@@ -11,7 +11,7 @@ See [full example](examples/reactive-router/index.tsx). You can also run the exa
 ```ts
 const App = () => {
     // 1. Define some routes
-    const BOARD_ROUTE = "/board/:boardId" as const
+    const BOARD_ROUTE = "/board/:boardId"
     const ROOT_ROUTE = "/"
 
     // 2. Create a router that maps routes to route handlers. When using Harmaja, the handlers
