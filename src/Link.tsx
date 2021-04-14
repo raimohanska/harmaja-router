@@ -1,21 +1,21 @@
 import { h } from "harmaja"
-import { RoutePath, RouteMap } from "./types";
+import { RoutePath, RouteMap, RoutesOf } from "./types";
 import { ReactiveRouter } from "./ReactiveRouter";
+import { withRouter } from "./HarmajaRouter";
 
 type LinkProps<Routes> = JSX.DetailedHTMLProps<JSX.AnchorHTMLAttributes<HTMLAnchorElement>, HTMLAnchorElement> 
-& (Routes extends RouteMap<infer R> ? {
-    href: RoutePath<R>
-} : never)
+& {
+    href: RoutePath<RoutesOf<Routes>>
+}
 
 export function Link<Routes>( props: LinkProps<Routes> ) {
+    type R = RoutesOf<Routes>
+    let router: ReactiveRouter<R>
+    withRouter<R>(r => router = r)
+    const href = props.href
     const onClick = (e: JSX.MouseEvent) => {
         if (!(e.altKey || e.shiftKey)) {
-
-
-            // TODO: how to pass the router here? Cannot include in the route handlers
-            // (try to type it...). Would be the perfect case for Context in harmaja
-            // indeed.
-
+            router.navigateByPath(href)
             e.stopPropagation();
             e.preventDefault();
         }

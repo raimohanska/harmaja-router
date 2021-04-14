@@ -9,7 +9,18 @@ import {
 import * as L from "lonna";
 import { StaticRouter } from "./StaticRouter";
 
-export type ReactiveRouter<R> = {
+export type Navigator<R> = {
+    navigateByParams<PathKey extends RouteKey<R>>(
+        p: PathKey,
+        params: PathParams<PathKey>
+    ): void;
+    navigateByParams<PathKey extends RouteKey<R>>(
+        p: {} extends PathParams<PathKey> ? PathKey : never
+    ): void;
+    navigateByPath: <Path extends RoutePath<R>>(path: Path) => void
+};
+
+export type ReactiveRouter<R> = Navigator<R> & {
     navigateByParams<PathKey extends RouteKey<R>>(
         p: PathKey,
         params: PathParams<PathKey>

@@ -15,7 +15,7 @@
     "@types/path-to-regexp": "^1.7.0",
     "babel-jest": "^26.3.0",
     "concurrently": "^5.3.0",
-    "harmaja": "^0.22.0",
+    "harmaja": "^0.23.0",
     "jest": "^26.4.0",
     "lonna": "^0.12",
     "nodemon": "^2.0.7",
@@ -36,7 +36,7 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "prepublishOnly": "rm -rf dist && yarn build",
-    "example": "parcel --out-dir dist/examples examples/reactive-router/index.html",
+    "example": "parcel --out-dir dist/examples examples/harmaja-router/index.html",
     "lint": "prettier --check \"**/*.{json,md,ts}\"",
     "format": "prettier --write '**/*.{json,md,ts}'"    
   }
