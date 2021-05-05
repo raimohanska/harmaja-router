@@ -17,7 +17,7 @@ export type Navigator<R> = {
     navigateByParams<PathKey extends RouteKey<R>>(
         p: {} extends PathParams<PathKey> ? PathKey : never
     ): void;
-    navigateByPath: <Path extends RoutePath<R>>(path: Path) => void
+    navigateByPath: <Path extends RoutePath<R>>(path: Path) => void;
 };
 
 export type ReactiveRouter<R> = Navigator<R> & {

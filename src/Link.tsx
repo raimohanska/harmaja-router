@@ -14,7 +14,7 @@ export function Link<Routes>( props: LinkProps<Routes> ) {
     withRouter<R>(r => router = r)
     const href = props.href
     const onClick = (e: JSX.MouseEvent) => {
-        if (!(e.altKey || e.shiftKey)) {
+        if (!(e.altKey || e.shiftKey || e.metaKey)) {
             router.navigateByPath(href)
             e.stopPropagation();
             e.preventDefault();

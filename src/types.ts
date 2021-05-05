@@ -48,7 +48,7 @@ export type RouteMap<R> = {
         ? RouteHandler<PathParams<Path>, R[Path]>
         : never;
 };
-export type RoutesOf<Routes> = Routes extends RouteMap<infer R> ? R : never
+export type RoutesOf<Routes> = Routes extends RouteMap<infer R> ? R : never;
 export type RouteKey<R> = keyof R & string;
 export type RouteResult<R> = ReturnType<RouteMap<R>[keyof R]>;
 export type RoutePath<R> = ValidPathForKey<keyof R & string>;
