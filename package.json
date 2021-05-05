@@ -36,7 +36,7 @@
     "test": "jest",
     "test:watch": "jest --watchAll",
     "prepublishOnly": "rm -rf dist && yarn build",
-    "example": "parcel --out-dir dist/examples examples/harmaja-router/index.html",
+    "example": "parcel --out-dir dist/examples examples/reactive-router/index.html",
     "lint": "prettier --check \"**/*.{json,md,ts}\"",
     "format": "prettier --write '**/*.{json,md,ts}'"    
   }

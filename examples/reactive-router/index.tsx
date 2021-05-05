@@ -35,7 +35,10 @@ const Home = () => {
     return <div id="root">
         <h1>Welcome</h1>
         <ul>
+            {/* For static routes, you can create links type-safely simply like this */}
             <li><Link<Routes> href="/board/board1">Board 1</Link></li>
+            {/* For dynamic routes, you can create links type-safely like this */}
+            <li><Link<Routes> route={BOARD_ROUTE} boardId="board2">Board 2</Link></li>
         </ul>
     </div>
 }

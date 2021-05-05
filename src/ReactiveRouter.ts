@@ -28,7 +28,7 @@ export type ReactiveRouter<R> = Navigator<R> & {
     navigateByParams<PathKey extends RouteKey<R>>(
         p: {} extends PathParams<PathKey> ? PathKey : never
     ): void;
-    navigateByPath: <Path extends RoutePath<R>>(path: Path) => void;
+    navigateByPath: <Path extends RoutePath<R>>(path: Path) => void;  
     result: L.Property<RouteResult<R>>;
 };
 export function ReactiveRouter<R>(
@@ -97,6 +97,6 @@ export function ReactiveRouter<R>(
     return {
         navigateByParams,
         navigateByPath,
-        result,
+        result
     };
 }

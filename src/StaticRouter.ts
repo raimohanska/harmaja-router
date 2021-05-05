@@ -9,10 +9,7 @@ import {
     RoutePath,
 } from "./types";
 
-function RouteEntry<Key extends string, Result>(
-    routeKey: Key,
-    handler: RouteHandler<PathParams<Key>, Result>
-) {
+function RouteEntry<Key extends string>( routeKey: Key ) { 
     const expression = routeKey === "" ? ("(.*)" as Key) : routeKey;
 
     const tokens = PTR.parse(expression);
@@ -36,9 +33,25 @@ function RouteEntry<Key extends string, Result>(
             const result = match(path.split("?")[0]);
             if (!result) return null;
             return result.params;
-        },
+        }
+    };
+}
+function RouteHandlerEntry<Key extends string, Result>(
+    routeKey: Key,
+    handler: RouteHandler<PathParams<Key>, Result>
+) {
+    const entry = RouteEntry(routeKey)
+    return {
+        ...entry,
         apply: (params: object) => (handler as any)(params),
     };
+}
+
+export function toPath<PathKey extends string>(
+    routeKey: PathKey,
+    params: PathParams<PathKey>
+) {    
+    return RouteEntry(routeKey).toPath(params)
 }
 
 type StaticRouter<R> = {
@@ -56,7 +69,7 @@ type StaticRouter<R> = {
 export function StaticRouter<R>(routes: RouteMap<R>): StaticRouter<R> {
     const routeEntries = Object.fromEntries(
         Object.entries(routes).map(([routeKey, handler]) => {
-            const entry = RouteEntry(routeKey, handler as any);
+            const entry = RouteHandlerEntry(routeKey, handler as any);
             return [routeKey, entry];
         })
     );
@@ -100,6 +113,6 @@ export function StaticRouter<R>(routes: RouteMap<R>): StaticRouter<R> {
     return {
         routeByParams,
         routeByPath,
-        routeKeys: Object.keys(routes),
+        routeKeys: Object.keys(routes)
     };
 }
