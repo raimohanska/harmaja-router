@@ -9,7 +9,7 @@ import {
     RoutePath,
 } from "./types";
 
-function RouteEntry<Key extends string>( routeKey: Key ) { 
+function RouteEntry<Key extends string>(routeKey: Key) {
     const expression = routeKey === "" ? ("(.*)" as Key) : routeKey;
 
     const tokens = PTR.parse(expression);
@@ -33,14 +33,14 @@ function RouteEntry<Key extends string>( routeKey: Key ) {
             const result = match(path.split("?")[0]);
             if (!result) return null;
             return result.params;
-        }
+        },
     };
 }
 function RouteHandlerEntry<Key extends string, Result>(
     routeKey: Key,
     handler: RouteHandler<PathParams<Key>, Result>
 ) {
-    const entry = RouteEntry(routeKey)
+    const entry = RouteEntry(routeKey);
     return {
         ...entry,
         apply: (params: object) => (handler as any)(params),
@@ -50,11 +50,11 @@ function RouteHandlerEntry<Key extends string, Result>(
 export function toPath<PathKey extends string>(
     routeKey: PathKey,
     params: PathParams<PathKey>
-) {    
-    return RouteEntry(routeKey).toPath(params)
+) {
+    return RouteEntry(routeKey).toPath(params);
 }
 
-type StaticRouter<R> = {
+export type StaticRouter<R> = {
     routeByParams<PathKey extends RouteKey<R>>(
         routeKey: PathKey,
         params: PathParams<PathKey>
@@ -113,6 +113,6 @@ export function StaticRouter<R>(routes: RouteMap<R>): StaticRouter<R> {
     return {
         routeByParams,
         routeByPath,
-        routeKeys: Object.keys(routes)
+        routeKeys: Object.keys(routes),
     };
 }

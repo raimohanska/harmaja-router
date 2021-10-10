@@ -28,22 +28,17 @@ export type ReactiveRouter<R> = Navigator<R> & {
     navigateByParams<PathKey extends RouteKey<R>>(
         p: {} extends PathParams<PathKey> ? PathKey : never
     ): void;
-    navigateByPath: <Path extends RoutePath<R>>(path: Path) => void;  
+    navigateByPath: <Path extends RoutePath<R>>(path: Path) => void;
     result: L.Property<RouteResult<R>>;
 };
-export function ReactiveRouter<R>(
-    routes: RouteMap<R>,
-    scope: L.Scope
-): ReactiveRouter<R> {
-    const staticRouter = StaticRouter(routes);
-    const navigationRequests = L.bus<RouteMatch<R>>();
-    const pathFromPopstate = L.fromEvent(window, "popstate").pipe(
-        L.map(pathFromBrowser)
-    );
-    const routeRequests = L.merge(navigationRequests, pathFromPopstate);
-    const route = routeRequests.pipe(L.toProperty(pathFromBrowser(), scope));
 
-    function pathFromBrowser() {
+type RouteRequest<R> = RouteMatch<R> & {
+    kind: "init" | "push" | "pop";
+};
+
+const pathFromBrowser =
+    <R>(staticRouter: StaticRouter<R>, kind: "init" | "pop") =>
+    (): RouteRequest<R> => {
         const path = document.location.pathname as RoutePath<R>;
         const result = staticRouter.routeByPath(path);
         if (!result)
@@ -51,8 +46,23 @@ export function ReactiveRouter<R>(
                 `Non-matching path ${path}. Known routes are ${staticRouter.routeKeys}`
             );
 
-        return result;
-    }
+        return { ...result, kind };
+    };
+
+export function ReactiveRouter<R>(
+    routes: RouteMap<R>,
+    scope: L.Scope
+): ReactiveRouter<R> {
+    const staticRouter = StaticRouter(routes);
+    const navigationRequests = L.bus<RouteRequest<R>>();
+    const pathFromPopstate = L.fromEvent(window, "popstate").pipe(
+        L.map(pathFromBrowser(staticRouter, "pop"))
+    );
+    const routeRequests = L.merge(navigationRequests, pathFromPopstate);
+    const route = routeRequests.pipe(
+        L.toProperty(pathFromBrowser(staticRouter, "init")(), scope)
+    );
+
     function navigateByParams<PathKey extends RouteKey<R>>(
         p: PathKey,
         params: PathParams<PathKey>
@@ -74,7 +84,7 @@ export function ReactiveRouter<R>(
                     staticRouter.routeKeys
                 )}`
             );
-        navigationRequests.push(result);
+        navigationRequests.push({ ...result, kind: "push" });
     }
     function navigateByPath<Path extends RoutePath<R>>(path: Path) {
         const result = staticRouter.routeByPath(path);
@@ -84,19 +94,19 @@ export function ReactiveRouter<R>(
                     staticRouter.routeKeys
                 )}`
             );
-        navigationRequests.push(result);
+        navigationRequests.push({ ...result, kind: "push" });
+        console.log("Requested");
     }
 
     const result: L.Property<RouteResult<R>> = L.view(route, (r) => r.result);
 
     routeRequests.forEach((route) => {
-        if (pathFromBrowser() === route.path) return;
-        history.pushState({}, "", route.path);
+        if (route.kind === "push") history.pushState({}, "", route.path);
     });
 
     return {
         navigateByParams,
         navigateByPath,
-        result
+        result,
     };
 }
