@@ -95,7 +95,6 @@ export function ReactiveRouter<R>(
                 )}`
             );
         navigationRequests.push({ ...result, kind: "push" });
-        console.log("Requested");
     }
 
     const result: L.Property<RouteResult<R>> = L.view(route, (r) => r.result);
