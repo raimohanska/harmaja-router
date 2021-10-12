@@ -28,7 +28,7 @@
     "path-to-regexp": "^6.2.0"
   },
   "peerDependencies": {
-    "lonna": ">0.12"
+    "lonna": ">=0.12"
   },
   "scripts": {
     "build": "tsc",
